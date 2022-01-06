@@ -4,3 +4,87 @@ location: "KB_Digital_Health_Survey_Dataset/Linelist_"
 num_files: 100
 
 period: 7
+
+filtering:
+  file_name: "rules/df_rules.csv"
+  col_name: 'Average_number_of_surveys_conducted_per_day'
+  threshold: 4
+
+
+rules:
+#  - name: "Num_surveys_rule"
+#    description: 'Average number of surveys done being low is suspicious'
+#    file_name: "rules/df_rules.csv"
+#    col_name: 'Average_number_of_surveys_conducted_per_day'
+#    good_range: "higher"
+#    proportions: False
+#    rule_type: "normalize_by_divide"
+#    divide_by: 4
+  - name: "Duplicancy_rule"
+    description: 'Proportion of duplicancy being high is suspicious'
+    file_name: "rules/df_rules.csv"
+    col_name: 'Proportion_of_duplicacy_name_age'
+    good_range: "lower"
+    proportions: True
+  - name: "Mobile_rule"
+    description: 'proportion of registered mobile numbers being low is suspicious'
+    file_name: "rules/df_rules.csv"
+    col_name: 'Proportion_of_mobiles'
+    good_range: "higher"
+    proportions: True
+  - name: "Diseases_filled"
+    description: 'proportion of surveyees with diseases being low is suspicious'
+    file_name: "rules/df_rules.csv"
+    col_name: 'Proportion_with_diseases_filled'
+    good_range: "higher"
+    proportions: True
+  - name: "Rule_4_1"
+    description: 'proportion of diseases in category 4_1 being at extremes is suspicious'
+    file_name: "rules/df_rules.csv"
+    col_name: 'Proportion_with_diseases_4_1'
+    good_range: "mid"
+    proportions: True
+    range:
+      start: 10
+      end: 90
+  - name: "Rule_4_2"
+    description: 'proportion of diseases in category 4_2 being at extremes is suspicious'
+    file_name: "rules/df_rules.csv"
+    col_name: 'Proportion_with_diseases_4_2'
+    good_range: "mid"
+    proportions: True
+    range:
+      start: 1
+      end: 70
+  - name: "Rule_4_3"
+    description: 'Higher prevalence of diseases in category 4_3 among those above 30 compared to those less than 30'
+    file_name: "rules/df_rules.csv"
+    proportions: False
+    rule_type: "compare"
+    col_name: 'Proportion_with_diseases_4_3_more_30'
+    col_name2: 'Proportion_with_diseases_4_3_less_30'
+  - name: "Rule_4_4"
+    description: 'Higher prevalence of diseases in category 4_4 among those above 60 compared to those less than 60'
+    file_name: "rules/df_rules.csv"
+    proportions: False
+    rule_type: "compare"
+    col_name: 'Proportion_with_diseases_4_4_more_60'
+    col_name2: 'Proportion_with_diseases_4_4_less_60'
+  - name: "Rule_4_5"
+    description: 'Proportion of of people Age<30 with 1 to 5 diseases being low is suspicious'
+    file_name: "rules/df_rules.csv"
+    col_name: 'Proportion_with_diseases_4_5'
+    good_range: "higher"
+    proportions: True
+  - name: "Rule_4_6"
+    description: 'Proportion of people Age 30-60 with 2-8 diseases being low is suspicious'
+    file_name: "rules/df_rules.csv"
+    col_name: 'Proportion_with_diseases_4_6'
+    good_range: "higher"
+    proportions: True
+  - name: "Rule_4_7"
+    description: 'Proportion of people Age 60+ with 5+ diseases being low is suspicious'
+    file_name: "rules/df_rules.csv"
+    col_name: 'Proportion_with_diseases_4_7'
+    good_range: "higher"
+    proportions: True

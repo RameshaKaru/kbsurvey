@@ -16,9 +16,9 @@ class ProcessInputData:
 
         print("Initializing the input processing class")
         self.cnfg = self.get_configs()
-        self.df = self.read_data()
-        self.df = self.format_df()
-        self.df_time_steps_list, self.time_steps = self.divide_time_steps()
+        # self.df = self.read_data()
+        # self.df = self.format_df()
+        # self.df_time_steps_list, self.time_steps = self.divide_time_steps()
         # print("test", Counter(self.df['mobile']))
 
 
@@ -38,6 +38,12 @@ class ProcessInputData:
                 return configs
             except yaml.YAMLError as exc:
                 print(exc)
+
+    def read_format_raw_data(self):
+        self.df = self.read_data()
+        self.df = self.format_df()
+        self.df_time_steps_list, self.time_steps = self.divide_time_steps()
+
 
     def read_data(self):
 

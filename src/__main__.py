@@ -10,8 +10,11 @@ if __name__ == '__main__':
     start_time = time.time()
 
     processInput = ProcessInputData()
-    calculaterules = CalculateRules(processInput.df_time_steps_list, processInput.time_steps)
-    df = calculaterules.calRules()
+    # processInput.read_format_raw_data()
+    # calculaterules = CalculateRules(processInput.df_time_steps_list, processInput.time_steps)
+    # df = calculaterules.calRules()
+
+
 
 
 
