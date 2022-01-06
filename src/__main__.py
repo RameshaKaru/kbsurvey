@@ -11,6 +11,7 @@ if __name__ == '__main__':
 
     processInput = ProcessInputData()
     calculaterules = CalculateRules(processInput.df_time_steps_list, processInput.time_steps)
+    df = calculaterules.calRules()
 
 
 
