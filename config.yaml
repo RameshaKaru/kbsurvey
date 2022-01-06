@@ -1,0 +1,6 @@
+# configuration file
+
+location: "KB_Digital_Health_Survey_Dataset/Linelist_"
+num_files: 100
+
+period: 7

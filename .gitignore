@@ -1,0 +1,14 @@
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+.idea/
+
+
+# data & results
+KB_Digital_Health_Survey_Dataset/
+rules/
+test/
+test.csv
+test1.csv
