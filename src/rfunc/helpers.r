@@ -58,25 +58,29 @@ func_modify_data <- function(percentages, low_cut, up_cut,low,up){
   # cut off peaks at 0
   if(count_0/tot_data > 0.01){
     next_min <- min( percentages[percentages!=min(percentages)] )
-    percentages <- subset(percentages, percentages>next_min)
+    percentages <- subset(percentages, percentages>=next_min)
     print(paste('Cutting values below',next_min))
+    print(length(percentages))
 
   # no peak, cut off at given low_cut
   }else{
-    percentages <- subset(percentages, percentages>low_cut)
+    percentages <- subset(percentages, percentages>=low_cut)
     print(paste('Cutting values below',low_cut))
+    print(length(percentages))
   }
 
   # cut off peaks at 100
   if(count_100/tot_data > 0.01){
     next_max <- max( percentages[percentages!=max(percentages)] )
-    percentages <- subset(percentages, percentages<next_max)
+    percentages <- subset(percentages, percentages<=next_max)
     print(paste('Cutting values above',next_max))
+    print(length(percentages))
 
   # no peak, cut off at given up_cut
   }else{
-    percentages <- subset(percentages, percentages<up_cut)
+    percentages <- subset(percentages, percentages<=up_cut)
     print(paste('Cutting values above',up_cut))
+    print(length(percentages))
   }
 
   return(percentages)
@@ -135,7 +139,7 @@ func_plot_new_kde <- function(fit, name){
 
 }
 
-func_get_all_kdes <- function(rule_type, bounds, percentages){
+func_get_all_kdes <- function(rule_type, bounds, percentages, rule_names){
   # Gets all KDEs
 
   t <- 0.5
@@ -144,19 +148,27 @@ func_get_all_kdes <- function(rule_type, bounds, percentages){
 
   for (i in 1:num_rules){
       if (rule_type[[i]]=='lower'){
+          print(rule_names[[i]])
           kde_fit <- func_cut_off_clusters(unlist(percentages[[i]]),0+t,100-t)
           kdes[[i]] <- kde_fit
+          func_plot_new_kde(kde_fit, rule_names[[i]])
       } else if (rule_type[[i]]=='higher'){
+          print(rule_names[[i]])
           kde_fit <- func_cut_off_clusters(unlist(percentages[[i]]),0+t,100-t)
           kdes[[i]] <- kde_fit
+          func_plot_new_kde(kde_fit, rule_names[[i]])
       } else if (rule_type[[i]]=='mid'){
+          print(rule_names[[i]])
           p <- unlist(percentages[[i]])
           s <- bounds[[i]][[1]]
           e <- bounds[[i]][[2]]
           sub1 <- subset(p, p <= s)
           sub2 <- subset(p, p >= e)
           sub1_fit <- func_cut_off_clusters(sub1,0+t,s-t,0,s)
+          func_plot_new_kde(sub1_fit, paste(rule_names[[i]],"_g1"))
+          print(paste("test", length(sub2)))
           sub2_fit <- func_cut_off_clusters(sub2,e+t,100-t,e,100)
+          func_plot_new_kde(sub2_fit, paste(rule_names[[i]],"_g2"))
           kdes[[i]] <- list(sub1_fit, sub2_fit)
       }
 

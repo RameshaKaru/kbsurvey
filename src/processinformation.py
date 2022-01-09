@@ -40,15 +40,18 @@ class ProcessInformation:
         """
         bounds = []
         rule_type = []
-        for rule in self.cnfg['short_rules']:
+        rule_names = []
+        for rule in self.cnfg['standard_rules']:
             p, r = self.calc_bounds(rule)
             bounds.append(p)
             rule_type.append(r)
-        for rule in self.cnfg['contra_rules']:
+            rule_names.append(rule['name'])
+        for rule in self.cnfg['compare_rules']:
             bounds.append([0, 100])
-            rule_type.append('lower')
+            rule_type.append('higher')
+            rule_names.append(rule['name'])
 
-        return bounds, rule_type
+        return bounds, rule_type, rule_names
 
     def calc_bounds(self, rule):
         """
@@ -73,5 +76,38 @@ class ProcessInformation:
             print(rule['name'])
 
         return p, r
+
+    def get_percentages(self):
+        percentages = []
+        for rule in self.cnfg['standard_rules']:
+            p = self.shortrule(rule)
+            percentages.append(p)
+        for rule in self.cnfg['compare_rules']:
+            p = self.comparerule(rule)
+            percentages.append(p)
+
+        percentages = np.asarray(percentages)
+        print(percentages.shape)
+        print(np.min(percentages, axis=1))
+        print(np.max(percentages, axis=1))
+        print(np.mean(percentages, axis=1))
+        self.df_info.to_csv("test.csv")
+
+        return percentages
+        # percentages_new = percentages.swapaxes(0, 1)
+        # print(percentages_new.shape)
+        # return percentages_new
+
+    def shortrule(self, rule):
+        print(rule['name'])
+        percentages = np.asarray(self.df_info[rule['col_name']])
+        return percentages
+
+    def comparerule(self, rule):
+        print("comparison rule", rule['name'])
+        self.df_info[rule['name']+'_normalized'] = (self.df_info[rule['col_name']] - self.df_info[rule['col_name2']] + 100) /2
+        percentages = np.asarray(self.df_info[rule['name']+'_normalized'])
+        return percentages
+
 
 
