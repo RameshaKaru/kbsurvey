@@ -80,7 +80,7 @@ class CalculateRules:
             number_of_days=pd.NamedAgg(column='date_of_survey', aggfunc='nunique'),
             number_of_houses=pd.NamedAgg(column='house_id', aggfunc='nunique'),
             duplicacy_age=pd.NamedAgg(column='duplicacy_age', aggfunc='sum'),
-            mobile=pd.NamedAgg(column='mobile', aggfunc='sum'),
+            mobile=pd.NamedAgg(column='mobile', aggfunc='sum')
         )
         gdf['Average_number_of_surveys_conducted_per_day'] = gdf['number_of_beneficieries'] / gdf[
             'number_of_days']

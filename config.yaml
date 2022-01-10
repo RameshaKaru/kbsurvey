@@ -10,6 +10,7 @@ filtering:
   col_name: 'Average_number_of_surveys_conducted_per_day'
   threshold: 4
 
+data_points_threshold: 4
 
 standard_rules:
 #  - name: "Num_surveys_rule"

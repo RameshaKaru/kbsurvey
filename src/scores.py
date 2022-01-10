@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from scipy.stats.stats import pearsonr
 
 class Scores:
 
@@ -74,5 +75,9 @@ class Scores:
                    'beneficiery_and_health_worker_dependant_scores']
         new_df = pd.DataFrame(self.df, columns=columns)
         new_df.to_csv("rules/scores.csv")
+
+        print("Correlation between scores & hw scores:", pearsonr(norms, hw_score)[0])
+        print("Correlation between scores & hw+ben scores:", pearsonr(norms, hw_ben_score)[0])
+        print("Correlation between hw & hw+ben scores:", pearsonr(hw_score, hw_ben_score)[0])
 
         return norms

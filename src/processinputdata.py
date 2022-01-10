@@ -103,6 +103,7 @@ class ProcessInputData:
         print("Datapoints (1 week gap):", Counter(c.values()))
         data_points = pd.DataFrame({"health_worker_id": c.keys(), "num_datapoints": c.values()})
         data_points.to_csv("datapoints_count.csv")
+        print("Num_weeks", len(df_time_steps))
 
         return df_time_steps, time_steps
 

@@ -4,16 +4,20 @@ from .calculaterules import CalculateRules
 from .processinformation import ProcessInformation
 from .kde import KDEs
 from .scores import Scores
-
+from .predictor import Predictor
+from .lstm_mdl import LSTM_mdl
 
 
 if __name__ == '__main__':
     start_time = time.time()
 
     processInput = ProcessInputData()
-    # processInput.read_format_raw_data()
+
+    #####
+    processInput.read_format_raw_data()
     # calculaterules = CalculateRules(processInput.df_time_steps_list, processInput.time_steps)
     # df = calculaterules.calRules()
+    #####
 
     processInfo = ProcessInformation(processInput.cnfg)
     processInfo.filter_data()
@@ -31,7 +35,12 @@ if __name__ == '__main__':
     fraud_prob = sc.get_fraud_probs(p.T)
     norm_scores = sc.get_simple_norm(fraud_prob)
 
+    predictor_obj = Predictor(processInput.cnfg)
+    lin_model = predictor_obj.simple_predictor()
+    # lstm_model = predictor_obj.lstmModel()
+    # predictor_obj.lstm_fit_pred(lstm_model)
 
+    lstm_mdl = LSTM_mdl(predictor_obj.data)
 
 
 
