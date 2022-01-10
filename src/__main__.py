@@ -14,7 +14,7 @@ if __name__ == '__main__':
     processInput = ProcessInputData()
 
     #####
-    processInput.read_format_raw_data()
+    # processInput.read_format_raw_data()
     # calculaterules = CalculateRules(processInput.df_time_steps_list, processInput.time_steps)
     # df = calculaterules.calRules()
     #####
@@ -36,9 +36,8 @@ if __name__ == '__main__':
     norm_scores = sc.get_simple_norm(fraud_prob)
 
     predictor_obj = Predictor(processInput.cnfg)
-    lin_model = predictor_obj.simple_predictor()
-    # lstm_model = predictor_obj.lstmModel()
-    # predictor_obj.lstm_fit_pred(lstm_model)
+    lin_model = predictor_obj.simple_predictor(predictor_obj.data)
+
 
     lstm_mdl = LSTM_mdl(predictor_obj.data)
 

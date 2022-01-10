@@ -21,12 +21,14 @@ class Predictor:
         print("Initializing the predictor")
         self.cnfg = cnfg
         self.df_scores = pd.read_csv("rules/scores.csv")
-        self.data = self.calc_datapoints()
+        self.data, self.hw_data, self.hw_ben_data = self.calc_datapoints()
 
     def calc_datapoints(self):
         gdf = self.df_scores.groupby("health_worker_id").agg(
             num_data=pd.NamedAgg(column='scores', aggfunc=lambda x: len(list(x))),
-            scores_list=pd.NamedAgg(column='scores', aggfunc=lambda x: list(x))
+            scores_list=pd.NamedAgg(column='scores', aggfunc=lambda x: list(x)),
+            hw_scores_list=pd.NamedAgg(column='health_worker_dependant_scores', aggfunc=lambda x: list(x)),
+            hw_ben_scores_list=pd.NamedAgg(column='beneficiery_and_health_worker_dependant_scores', aggfunc=lambda x: list(x))
         )
 
         print(gdf['num_data'].value_counts())
@@ -36,28 +38,38 @@ class Predictor:
         print(df['num_data'].value_counts())
 
         scores_list = list(df['scores_list'])
+        hw_scores_list = list(df['hw_scores_list'])
+        hw_ben_scores_list = list(df['hw_ben_scores_list'])
         print(len(scores_list))
         print(len(scores_list[0]))
 
         data = []
+        hw_data = []
+        hw_ben_data = []
         for i in range(len(scores_list)):
             d = scores_list[i]
+            hwd = hw_scores_list[i]
+            hwbend = hw_ben_scores_list[i]
             l = len(d)
             if l == 4:
                 data.append(d)
+                hw_data.append(hwd)
+                hw_ben_data.append(hwbend)
             elif l > 4:
                 for j in range(l - data_points_threshold + 1):
                     data.append(d[j:j + data_points_threshold])
+                    hw_data.append(hwd[j:j + data_points_threshold])
+                    hw_ben_data.append(hwbend[j:j + data_points_threshold])
 
         print("Number of data points", len(data))
 
-        return np.array(data)
+        return np.array(data), np.array(hw_data), np.array(hw_ben_data)
 
-    def simple_predictor(self):
+    def simple_predictor(self, data):
 
         # #split dataset in train and testing set
-        x = self.data[:,:-1]
-        y = self.data[:,-1]
+        x = data[:,:-1]
+        y = data[:,-1]
         X_train,X_test,Y_train,Y_test=train_test_split(x,y,test_size=0.2,random_state=0)
 
         print("Total", len(X_train) + len(X_test))

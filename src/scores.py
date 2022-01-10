@@ -53,7 +53,7 @@ class Scores:
         return fraud_prob
 
     def get_simple_norm(self, prob):
-        norms = np.linalg.norm(prob, axis=1, ord=2)
+        norms = np.linalg.norm(prob, axis=1, ord=2)/10
 
         nsq = np.power(prob,2)
         hw_score = np.zeros(len(prob))
@@ -64,8 +64,8 @@ class Scores:
             else:
                 hw_ben_score = hw_ben_score + nsq[:,i]
 
-        hw_score = np.power(hw_score,0.5)
-        hw_ben_score = np.power(hw_ben_score, 0.5)
+        hw_score = np.power(hw_score,0.5)/2
+        hw_ben_score = np.power(hw_ben_score, 0.5)/8
 
         self.df['scores'] = norms
         self.df['health_worker_dependant_scores'] = hw_score
